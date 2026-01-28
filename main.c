@@ -43,10 +43,22 @@ Vec2 Edges[] = {
 char ASCII[] = " .:-=+*#%@";
 char canvas[SIZE][SIZE];
 
-Vec3 rotateXZ(Vec3 v, float angle) {
+Vec3 rotateXAxis(Vec3 v, float angle) {
+    Vec3 new = v;
+    new.y = v.y*cos(angle) - v.z*sin(angle);
+    new.z = v.y*sin(angle) + v.z*cos(angle);
+    return new;
+}
+Vec3 rotateYAxis(Vec3 v, float angle) {
     Vec3 new = v;
     new.x = v.x*cos(angle) - v.z*sin(angle);
     new.z = v.x*sin(angle) + v.z*cos(angle);
+    return new;
+}
+Vec3 rotateZAxis(Vec3 v, float angle) {
+    Vec3 new = v;
+    new.x = v.x*cos(angle) - v.y*sin(angle);
+    new.y = v.x*sin(angle) + v.y*cos(angle);
     return new;
 }
 
@@ -121,8 +133,8 @@ int main() {
         int EdgesSize = sizeof(Edges)/sizeof(Edges[0]);
         for (int i=0; i<EdgesSize; i++) {
             Vec2 edge = Edges[i];
-            Point p1 = project(rotateXZ(Vertices[edge.x], t));
-            Point p2 = project(rotateXZ(Vertices[edge.y], t));
+            Point p1 = project(rotateYAxis(Vertices[edge.x], t));
+            Point p2 = project(rotateYAxis(Vertices[edge.y], t));
             float opacity = (p1.opacity + p2.opacity) / 2;
             drawLine(p1.x, p1.y, p2.x, p2.y, opacity);
         }
